@@ -7,12 +7,14 @@ namespace DataTransferLib.Models.Servers
 {
     public class TcpServer : IServer
     {
-        public EventHandler OnStarted;
+        public event Action OnStarted;
+        public event Action OnDataReceived;
+        public event Action OnAnswerSended;
 
         private TcpListener _server;
         private Thread _listenThread;
 
-        public bool IsConnected { get; set; }
+        public bool IsStarted { get; set; }
 
         public TcpServer(int port)
         {
@@ -24,12 +26,13 @@ namespace DataTransferLib.Models.Servers
         {
             _server.Start();
             _listenThread = new Thread(Listen);
-            IsConnected = true;
+            IsStarted = true;
+            OnStarted?.Invoke();
         }
 
         public void Listen()
         {
-            while (IsConnected)
+            while (IsStarted)
             {
                 try
                 {
@@ -52,7 +55,7 @@ namespace DataTransferLib.Models.Servers
         public void Stop()
         {
             _server.Start();
-            OnStarted?.Invoke(this, EventArgs.Empty);
+            OnStarted?.Invoke();
         }
     }
 }

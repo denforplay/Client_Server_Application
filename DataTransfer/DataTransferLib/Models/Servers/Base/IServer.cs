@@ -4,7 +4,7 @@ namespace DataTransferLib.Models.Listeners
 {
     public interface IServer
     {
-        bool IsConnected { get; set; }
+        bool IsStarted { get; set; }
         void Start();
         void Listen();
         void Stop();
