@@ -10,11 +10,7 @@ namespace DataTransferLib.Models.Clients
 {
     public class Client : IClient
     {
-        public EventHandler OnStartedListening;
-        public EventHandler OnMessageReceived;
-        public EventHandler OnResponsed;
-
-        private TcpClient _client;
+        protected TcpClient _client;
         private Thread _listenThread;
         private NetworkStream _networkStream => _client.GetStream();
         
@@ -43,8 +39,6 @@ namespace DataTransferLib.Models.Clients
         
         public void Start()
         {
-            _listenThread = new Thread(Listen);
-            OnStartedListening?.Invoke(this, EventArgs.Empty);
             SendMessage("fff");
         }
 
@@ -60,7 +54,7 @@ namespace DataTransferLib.Models.Clients
             do
             {
                 int bytes = _networkStream.Read(data, 0, data.Length);
-                response.Append(Encoding.UTF8.GetString(data, 0, bytes));
+                response.Append(Encoding.ASCII.GetString(data, 0, bytes));
             }
             while (_networkStream.DataAvailable);
 
@@ -70,14 +64,12 @@ namespace DataTransferLib.Models.Clients
                 MessageTime = DateTime.Now,
                 Client = this
             };
-
-            OnMessageReceived?.Invoke(this, eventArgs);
         }
 
-        public void SendMessage(object content)
+        public virtual void SendMessage(object content)
         {
             string message = content.ToString();
-            byte[] data = Encoding.UTF8.GetBytes(message);
+            byte[] data = Encoding.ASCII.GetBytes(message);
             _networkStream.Write(data, 0, data.Length);
         }
 

@@ -10,8 +10,9 @@ namespace DataTransferTests.ModelsTests
         [Fact]
         public void CreateTcpServerTest_ReturnsTrue()
         {
-            IServer tcpServer = new TcpServer(8080);
-            Assert.True(tcpServer.IsConnected);
+            IServer tcpServer = new TcpServer("127.0.0.1", 8080);
+            Client client = new Client("127.0.0.1", 8080);
+            Assert.True(tcpServer.IsStarted);
         }
     }
 }

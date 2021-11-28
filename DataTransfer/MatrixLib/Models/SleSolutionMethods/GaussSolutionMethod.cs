@@ -4,14 +4,14 @@
     {
         public event Action OnSolved;
 
-        protected Matrix<double> _sleMatrix;
+        protected SLE _sle;
 
-        public GaussSolutionMethod(Matrix<double> sleMatrix)
+        public GaussSolutionMethod(SLE sle)
         {
-            _sleMatrix = sleMatrix;
+            _sle = sle;
         }
 
-        public virtual double[] SolveSle()
+        public virtual Matrix<double> SolveSle()
         {
             StraightRun();
 
@@ -20,7 +20,7 @@
 
         protected void StraightRun()
         {
-            for (int i = 0; i < _sleMatrix.GetHeight - 1; i++)
+            for (int i = 0; i < _sle.MatrixCoefficients.GetHeight; i++)
             {
                 Calculate(i);
             }
@@ -28,33 +28,36 @@
 
         protected void Calculate(int i)
         {
-            for (int j = i + 1; j < _sleMatrix.GetWidth - 1; j++)
+            var coefficients = _sle.MatrixCoefficients;
+            for (int j = i + 1; j < coefficients.GetWidth; j++)
             {
-                double d = _sleMatrix[j, i] / _sleMatrix[i, i];
-                for (int k = i; k < _sleMatrix.GetWidth - 1; k++)
+                double d = coefficients[j, i] / coefficients[i, i];
+                for (int k = i; k < coefficients.GetWidth; k++)
                 {
-                    _sleMatrix[j, k] = _sleMatrix[j, k] - d * _sleMatrix[i, k];
+                    coefficients[j, k] = coefficients[j, k] - d * coefficients[i, k];
                 }
 
-                _sleMatrix[j, _sleMatrix.GetWidth - 1] -= d * _sleMatrix[i, _sleMatrix.GetWidth - 1];
+                _sle.FreeMembers[j, 0] -= d * _sle.FreeMembers[i, 0];
             }
         }
 
-        protected double[] ReverseRun()
+        protected Matrix<double> ReverseRun()
         {
-            double[] x = new double[_sleMatrix.GetHeight];
+            var coefficients = _sle.MatrixCoefficients;
+            Matrix<double> x = new Matrix<double>(1, coefficients.GetHeight);
 
-            for (int i = _sleMatrix.GetHeight - 1; i >= 0; i--)
+            for (int i = coefficients.GetHeight - 1; i >= 0; i--)
             {
                 double d = 0;
-                for (int j = i; j < _sleMatrix.GetWidth - 1; j++)
+                for (int j = i; j < coefficients.GetWidth ; j++)
                 {
 
-                    double s = _sleMatrix[i, j] * x[j];
+                    double s = coefficients[i, j] * x[0, j];
                     d += s;
                 }
 
-                x[i] = Math.Round((_sleMatrix[i, _sleMatrix.GetWidth - 1] - d) / _sleMatrix[i, i], 2);
+                _sle.FreeMembers[i, 0] = Math.Round((_sle.FreeMembers[i, 0] - d) / coefficients[i, i], 2);
+                x[0, i] = _sle.FreeMembers[i, 0];
             }
 
             return x;

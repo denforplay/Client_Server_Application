@@ -2,12 +2,11 @@
 
 namespace MatrixLib.Models
 {
-    public class Matrix<T>
+    public class Matrix<T> where T : IComparable
     {
         private T[,] _matrix;
 
-        public int GetHeight => _matrix.GetLength(0);
-        public int GetWidth => _matrix.GetLength(1);
+       
 
         public Matrix(T[,] matrix)
         {
@@ -18,6 +17,9 @@ namespace MatrixLib.Models
         {
             _matrix = new T[height, width];
         }
+
+        public int GetHeight => _matrix.GetLength(0);
+        public int GetWidth => _matrix.GetLength(1);
 
         public void ChangeMatrix(int height, int width)
         {
@@ -49,6 +51,32 @@ namespace MatrixLib.Models
             }
 
             return clone;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is Matrix<T> otherMatrix)
+            {
+                if (otherMatrix.GetHeight != GetHeight || otherMatrix.GetWidth != GetWidth)
+                {
+                    return false;
+                }
+                else
+                {
+                    for(int i = 0; i < GetHeight; i++)
+                    {
+                        for (int j = 0; j < GetWidth; j++)
+                        {
+                            if (_matrix[i, j].CompareTo(otherMatrix[i, j]) != 0)
+                                return false;
+                        }
+                    }
+
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public override string ToString()

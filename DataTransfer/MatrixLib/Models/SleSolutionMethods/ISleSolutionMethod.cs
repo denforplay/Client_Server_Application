@@ -2,6 +2,6 @@
 {
     public interface ISleSolutionMethod
     {
-        public double[] SolveSle();
+        public Matrix<double> SolveSle();
     }
 }

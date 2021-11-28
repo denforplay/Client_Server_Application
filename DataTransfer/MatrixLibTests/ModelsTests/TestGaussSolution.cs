@@ -9,41 +9,58 @@ namespace MatrixLibTests.ModelsTests
         [Fact]
         public void Test2x2Sle()
         {
-            double[] expected = new double[]
+            Matrix<double> expected = new Matrix<double>(new double[,]
             {
-                5, 3
-            };
-
-            Matrix<double> sle = new Matrix<double>(new double[,]
-            {
-                { 1, 2, 11},
-                {3, -1, 12 }
+              { 5,3 }
             });
 
+            Matrix<double> coefficients = new Matrix<double>(new double[,]
+            {
+                {1, 2 },
+                {3, -1 }
+            });
+
+            Matrix<double> freeMembers = new Matrix<double>(new double[,]
+            {
+               {11 },
+               {12 }
+            });
+
+            SLE sle = new SLE(coefficients, freeMembers);
             ISleSolutionMethod solutionMethod = new GaussSolutionMethod(sle);
             var x = solutionMethod.SolveSle();
-            Assert.Equal(expected, x);
+            Assert.True(expected.Equals(x));
         }
 
         [Fact]
         public void Test4x4Sle()
         {
-            double[] expected = new double[]
+            Matrix<double> expected = new Matrix<double>(new double[,]
             {
-                -3, -1, 2, 7
-            };
-
-            Matrix<double> sle = new Matrix<double>(new double[,]
-            {
-                {3,2,1,1,-2 },
-                {1,-1,4,-1,-1 },
-                {-2,-2,-3,1,9 },
-                {1,5,-1,2,4 }
+              { -3, -1, 2, 7 }
             });
+
+            Matrix<double> coefficients = new Matrix<double>(new double[,]
+            {
+                {3,2,1,1},
+                {1,-1,4,-1 },
+                {-2,-2,-3,1 },
+                {1,5,-1,2 },
+            });
+
+            Matrix<double> freeMembers = new Matrix<double>(new double[,]
+            {
+                {-2 },
+                {-1 },
+                {9 },
+                {4 },
+            });
+
+            SLE sle = new SLE(coefficients, freeMembers);
 
             ISleSolutionMethod solutionMethod = new GaussSolutionMethod(sle);
             var x = solutionMethod.SolveSle();
-            Assert.Equal(expected, x);
+            Assert.True(expected.Equals(x));
         }
     }
 }

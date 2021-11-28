@@ -7,16 +7,17 @@ namespace MatrixLib.Models.SleSolutionMethods
 {
     public class DistributedGaussSolution : GaussSolutionMethod
     {
-        public DistributedGaussSolution(Matrix<double> sleMatrix) : base(sleMatrix)
+        public DistributedGaussSolution(SLE sle) : base(sle)
         {
         }
 
-        public override double[] SolveSle()
+        public override Matrix<double> SolveSle()
         {
-            double[] x = new double[_sleMatrix.GetHeight];
+            var coefficients = _sle.MatrixCoefficients;
+            Matrix<double> x = new Matrix<double>(1, coefficients.GetHeight);
             List<EventThread> threads = new List<EventThread>();
 
-            for (int i = 0; i < _sleMatrix.GetHeight - 1; i++)
+            for (int i = 0; i < coefficients.GetHeight; i++)
             {
                 int j = i;
                 EventThread thread = new EventThread(() => Calculate(j));
@@ -28,6 +29,7 @@ namespace MatrixLib.Models.SleSolutionMethods
                 int j = i;
                 threads[j].OnThreadCompleted += () => threads[j + 1].Start();
             }
+
 
             threads.First().Start();
 
