@@ -1,5 +1,6 @@
 ﻿using MatrixLib.Models;
 using MatrixLib.Models.SleSolutionMethods;
+using System.Net.Http;
 using Xunit;
 
 namespace MatrixLibTests.ModelsTests

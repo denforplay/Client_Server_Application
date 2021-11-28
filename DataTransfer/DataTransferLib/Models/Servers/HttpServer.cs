@@ -6,23 +6,28 @@ namespace DataTransferLib.Models.Servers.Base
 {
     public class HttpServer : TcpServer
     {
+        public static string VERSION = "HTTP/1.1";
+
         public HttpServer(string ip, int port) : base(ip, port)
         {
         }
 
         public override void Start()
         {
+            OnDataReceived += (client, message) =>
+            {
+                SendAnswer(client.GetStream(), "Message" + "received" + message);
+                client.Stop();
+            };
+
             Listen();
         }
 
         protected override void SendAnswer(NetworkStream networkStream, string message)
         {
-            message = "HTTP/1.1 200 OK\n" +
-                      "Content-type: text/html\n" +
-                      "Content-Length: " + message.Length + "\n\n"
-                      + message;
-
-            base.SendAnswer(networkStream, message);
+            Request request = Request.GetRequest(message);
+            Response response = Response.From(request);
+            response.Post(networkStream);
         }
     }
 }

@@ -3,12 +3,13 @@ using System.Net.Sockets;
 using System.Text;
 using DataTransferLib.Models.Clients;
 using System.Net;
+using DataTransferLib.Models.Clients.Base;
 
 namespace DataTransferLib.Models.Servers
 {
     public class TcpServer : IServer
     {
-        public delegate void ReceiveData(string message);
+        public delegate void ReceiveData(IClient client, string message);
         public event ReceiveData OnDataReceived;
 
         private TcpListener _server;
@@ -52,19 +53,16 @@ namespace DataTransferLib.Models.Servers
 
         private void ReceiveMessage(IClient client)
         {
-            byte[] data = new byte[64];
             StringBuilder builder = new StringBuilder();
-            NetworkStream clientStream = client.GetStream();
-            int bytes = 0;
-            do
+            StreamReader reader = new StreamReader(client.GetStream());
+            while (reader.Peek() != -1)
             {
-                bytes = clientStream.Read(data, 0, data.Length);
-                builder.Append(Encoding.ASCII.GetString(data, 0, bytes));
+                builder.AppendLine(reader.ReadLine());
             }
-            while (clientStream.DataAvailable);
 
-            OnDataReceived?.Invoke(builder.ToString());
-            SendAnswer(clientStream, "Message" + "received");
+            OnDataReceived?.Invoke(client, builder.ToString());
+           
+            SendAnswer(client.GetStream(), "Message" + "received" + builder.ToString());
             client.Stop();
         }
 

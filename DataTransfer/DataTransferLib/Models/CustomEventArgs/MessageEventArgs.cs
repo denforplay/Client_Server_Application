@@ -1,5 +1,4 @@
-﻿using System;
-using DataTransferLib.Models.Clients;
+﻿using DataTransferLib.Models.Clients.Base;
 
 namespace DataTransferLib.Models.CustomEventArgs
 {

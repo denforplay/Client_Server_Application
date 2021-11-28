@@ -1,10 +1,7 @@
-﻿using DataTransferLib.Models.CustomEventArgs;
-using System;
-using System.Collections.Generic;
+﻿using DataTransferLib.Models.Clients.Base;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
 namespace DataTransferLib.Models.Clients
 {
@@ -34,12 +31,15 @@ namespace DataTransferLib.Models.Clients
             {
                 throw new Exception();
             }
+
             Start();
         }
-        
+
         public void Start()
         {
-            SendMessage("fff");
+            _listenThread = new Thread(Listen);
+            _listenThread.Start();
+            SendMessage("HelloWorld\n");
         }
 
         public void Stop()
@@ -57,13 +57,6 @@ namespace DataTransferLib.Models.Clients
                 response.Append(Encoding.ASCII.GetString(data, 0, bytes));
             }
             while (_networkStream.DataAvailable);
-
-            var eventArgs = new MessageEventArgs
-            {
-                Message = response.ToString(),
-                MessageTime = DateTime.Now,
-                Client = this
-            };
         }
 
         public virtual void SendMessage(object content)
@@ -74,5 +67,7 @@ namespace DataTransferLib.Models.Clients
         }
 
         public NetworkStream GetStream() => _networkStream;
+
+       
     }
 }
