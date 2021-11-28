@@ -1,6 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Threading;
 
-namespace MatrixLib.Models.SleSolutionMethods
+namespace MatrixLib.Core
 {
     public class EventThread
     {
@@ -20,6 +21,5 @@ namespace MatrixLib.Models.SleSolutionMethods
         {
             _thread.Start();
         }
-
     }
 }
