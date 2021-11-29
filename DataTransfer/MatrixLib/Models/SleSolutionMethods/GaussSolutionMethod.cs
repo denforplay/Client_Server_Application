@@ -26,7 +26,7 @@
             }
         }
 
-        protected void Calculate(int i)
+        protected virtual void Calculate(int i)
         {
             var coefficients = _sle.MatrixCoefficients;
             for (int j = i + 1; j < coefficients.GetWidth; j++)

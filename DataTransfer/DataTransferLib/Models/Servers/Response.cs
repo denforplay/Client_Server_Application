@@ -24,7 +24,7 @@ namespace DataTransferLib.Models.Servers
 
             if (request.HttpType == Core.Enums.HttpType.GET)
             {
-                return new Response("200 OK", "text/html", new byte[0]);
+                return new Response("200 OK", "text/html", Encoding.ASCII.GetBytes(request.Data));
             }
             else
             {
@@ -47,6 +47,7 @@ namespace DataTransferLib.Models.Servers
             string r = $"{HttpServer.VERSION} {_status}\n" +
                 $"Content-type: {_contentType}\n" +
                 $"Content-length: {_data.Length}";
+            r += $"\n\nReceived data: {Encoding.UTF8.GetString(_data)}";
             byte[] data = Encoding.ASCII.GetBytes(r);
             networkStream.Write(data, 0, data.Length);
         }

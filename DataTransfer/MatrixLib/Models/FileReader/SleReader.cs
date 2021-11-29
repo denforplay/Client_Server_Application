@@ -7,8 +7,19 @@ namespace MatrixLib.Models.FileReader
     {
         private Regex _regex;
 
+        public SleReader(IFileReader<Regex> fileReader, string regexFilePath)
+        {
+            if (fileReader is null)
+                throw new ArgumentNullException("Empty file reader", nameof(fileReader));
+
+            _regex = fileReader.ReadData(regexFilePath);
+        }
+
         public SleReader(Regex regex)
         {
+            if (regex is null)
+                throw new ArgumentNullException("Regex can't be empty", nameof(regex));
+
             _regex = regex;
         }
 

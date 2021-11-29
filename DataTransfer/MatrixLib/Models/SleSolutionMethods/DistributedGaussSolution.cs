@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MatrixLib.Core;
+﻿using MatrixLib.Core;
 
 namespace MatrixLib.Models.SleSolutionMethods
 {
@@ -30,7 +27,6 @@ namespace MatrixLib.Models.SleSolutionMethods
                 threads[j].OnThreadCompleted += () => threads[j + 1].Start();
             }
 
-
             threads.First().Start();
 
             threads.Last().OnThreadCompleted += () =>
@@ -39,6 +35,21 @@ namespace MatrixLib.Models.SleSolutionMethods
             };
 
             return x;
+        }
+
+        protected override void Calculate(int i)
+        {
+            var coefficients = _sle.MatrixCoefficients;
+            Parallel.For(i + 1, coefficients.GetWidth, (j) =>
+            {
+                double d = coefficients[j, i] / coefficients[i, i];
+                for (int k = i; k < coefficients.GetWidth; k++)
+                {
+                    coefficients[j, k] = coefficients[j, k] - d * coefficients[i, k];
+                }
+
+                _sle.FreeMembers[j, 0] -= d * _sle.FreeMembers[i, 0];
+            });
         }
     }
 }

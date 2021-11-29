@@ -51,25 +51,21 @@ namespace DataTransferLib.Models.Servers
             }
         }
 
-        private void ReceiveMessage(IClient client)
+        protected virtual void ReceiveMessage(IClient client)
         {
             StringBuilder builder = new StringBuilder();
-            StreamReader reader = new StreamReader(client.GetStream());
-            while (reader.Peek() != -1)
-            {
-                builder.AppendLine(reader.ReadLine());
-            }
-
+            byte[] data = new byte[64];
+            client.GetStream().Read(data);
+            builder.AppendLine(Encoding.UTF8.GetString(data));
             OnDataReceived?.Invoke(client, builder.ToString());
-           
-            SendAnswer(client.GetStream(), "Message" + "received" + builder.ToString());
+            SendAnswer(client, "Message" + "received" + builder.ToString());
             client.Stop();
         }
 
-        protected virtual void SendAnswer(NetworkStream networkStream, string message)
+        protected virtual void SendAnswer(IClient client, string message)
         {
-            byte[] data = Encoding.ASCII.GetBytes(message);
-            networkStream.Write(data, 0, data.Length);
+            byte[] data = Encoding.UTF8.GetBytes(message);
+            client.GetStream().Write(data, 0, data.Length);
         }
 
         public void Stop()

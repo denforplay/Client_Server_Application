@@ -39,7 +39,7 @@ namespace DataTransferLib.Models.Clients
         {
             _listenThread = new Thread(Listen);
             _listenThread.Start();
-            SendMessage("HelloWorld\n");
+            SendMessage("Hi");
         }
 
         public void Stop()
@@ -54,7 +54,7 @@ namespace DataTransferLib.Models.Clients
             do
             {
                 int bytes = _networkStream.Read(data, 0, data.Length);
-                response.Append(Encoding.ASCII.GetString(data, 0, bytes));
+                response.Append(Encoding.UTF8.GetString(data, 0, bytes));
             }
             while (_networkStream.DataAvailable);
         }
@@ -62,7 +62,7 @@ namespace DataTransferLib.Models.Clients
         public virtual void SendMessage(object content)
         {
             string message = content.ToString();
-            byte[] data = Encoding.ASCII.GetBytes(message);
+            byte[] data = Encoding.UTF8.GetBytes(message);
             _networkStream.Write(data, 0, data.Length);
         }
 

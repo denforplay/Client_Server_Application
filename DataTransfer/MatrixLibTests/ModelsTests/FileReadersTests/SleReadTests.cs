@@ -13,5 +13,12 @@ namespace MatrixLibTests.ModelsTests.FileReadersTests
             IFileReader<SLE> fileReader = new SleReader(new Regex(@"\-?\d+(\,\d+)?"));
             var sle = fileReader.ReadData(@"C:\AAAA\test.txt");
         }
+
+        [Fact]
+        public void TestReadSleUsingRegexReader()
+        {
+            IFileReader<SLE> sleReader = new SleReader(new RegexReader(), @"C:\AAAA\regextest2.txt");
+            var sle = sleReader.ReadData(@"C:\AAAA\test.txt");
+        }
     }
 }

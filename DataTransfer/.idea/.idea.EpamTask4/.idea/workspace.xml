@@ -30,6 +30,7 @@
       <workItem from="1637570807315" duration="40000" />
       <workItem from="1637588617651" duration="13000" />
       <workItem from="1638106242534" duration="289000" />
+      <workItem from="1638188179631" duration="87000" />
     </task>
     <servers />
   </component>
@@ -40,5 +41,24 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/DataTransferTests/ModelsTests/TcpServerTests.cs</url>
+          <line>17</line>
+          <properties documentPath="C:\Users\Denis\Documents\GitHub\EpamTask4\DataTransfer\DataTransferTests\ModelsTests\TcpServerTests.cs" initialLine="17" containingFunctionPresentation="lambda expression inside method 'CreateTcpServerTest_ReturnsTrue'">
+            <startOffsets>
+              <option value="562" />
+            </startOffsets>
+            <endOffsets>
+              <option value="594" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

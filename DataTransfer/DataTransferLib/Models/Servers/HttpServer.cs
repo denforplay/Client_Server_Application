@@ -1,6 +1,8 @@
 ﻿using DataTransferLib.Models.Clients;
+using DataTransferLib.Models.Clients.Base;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace DataTransferLib.Models.Servers.Base
 {
@@ -14,20 +16,29 @@ namespace DataTransferLib.Models.Servers.Base
 
         public override void Start()
         {
-            OnDataReceived += (client, message) =>
-            {
-                SendAnswer(client.GetStream(), "Message" + "received" + message);
-                client.Stop();
-            };
-
             Listen();
         }
 
-        protected override void SendAnswer(NetworkStream networkStream, string message)
+        protected override void ReceiveMessage(IClient client)
+        {
+            StringBuilder builder = new StringBuilder();
+            StreamReader reader = new StreamReader(client.GetStream());
+            while (reader.Peek() != -1)
+            {
+                builder.AppendLine(reader.ReadLine());
+            }
+            //OnDataReceived?.Invoke(client, builder.ToString());
+
+            SendAnswer(client, "Message" + "received" + builder.ToString());
+            client.Stop();
+            Stop();
+        }
+
+        protected override void SendAnswer(IClient client, string message)
         {
             Request request = Request.GetRequest(message);
             Response response = Response.From(request);
-            response.Post(networkStream);
+            response.Post(client.GetStream());
         }
     }
 }

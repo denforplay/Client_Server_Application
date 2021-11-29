@@ -1,18 +1,25 @@
 ﻿using DataTransferLib.Models.Clients;
 using DataTransferLib.Models.Listeners;
 using DataTransferLib.Models.Servers;
+using System;
 using Xunit;
 
 namespace DataTransferTests.ModelsTests
 {
     public sealed class TcpServerTests
     {
-        [Fact]
-        public void CreateTcpServerTest_ReturnsTrue()
+        [Theory]
+        [InlineData("Hello")]
+        public void CreateTcpServerTest_ReturnsTrue(string message)
         {
-            IServer tcpServer = new TcpServer("127.0.0.1", 8080);
+            TcpServer tcpServer = new TcpServer("127.0.0.1", 8080);
+            tcpServer.OnDataReceived += (client, receivedMessage) =>
+            {
+                Assert.Equal(message, receivedMessage);
+            };
             Client client = new Client("127.0.0.1", 8080);
-            Assert.True(tcpServer.IsStarted);
+            client.SendMessage(message);
+          
         }
     }
 }

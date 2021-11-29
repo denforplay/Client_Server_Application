@@ -11,6 +11,9 @@ namespace MatrixLib.Models.FileReader
     {
         public Regex ReadData(string filepath)
         {
+            if (!File.Exists(filepath))
+                throw new FileNotFoundException("File is not exists", nameof(filepath));
+
             string patternFromFile = File.ReadAllLines(filepath).First();
             return new Regex(patternFromFile);
         }
