@@ -35,7 +35,7 @@ namespace MatrixLibTests.ModelsTests
 
             SLE sle = new SLE(coefficients, freeMembers);
 
-            IProfiler profiler = new Profiler("Distributed", "L",
+            IProfiler profiler = new Profiler("Distributed", "Linear",
                 new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle), () => new GaussSolutionMethod(sle)),
                 new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle), () => new GaussSolutionMethod(sle)),
                 new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle), () => new GaussSolutionMethod(sle)));

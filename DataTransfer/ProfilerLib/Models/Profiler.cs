@@ -29,38 +29,13 @@ namespace ProfilerLib.Models
 
             foreach(var actionsPair in _actions)
             {
-                double firstTime = actionsPair.Value.GetElapsedTime().TotalMilliseconds;
-                double secondTime = actionsPair.Key.GetElapsedTime().TotalMilliseconds;
-                if (profileData.TryGetValue(_firstKey, out List<double> results1))
-                {
-                    results1.Add(firstTime);
-                }
-                else
-                {
-                    profileData.Add(_firstKey, new List<double> { firstTime });
-                }
-
-                if (profileData.TryGetValue(_secondKey, out List<double> results2))
-                {
-                    results2.Add(secondTime);
-                }
-                else
-                {
-                    profileData.Add(_secondKey, new List<double> { secondTime });
-                }
+                double firstTime = actionsPair.Key.GetElapsedTime().TotalMilliseconds;
+                double secondTime = actionsPair.Value.GetElapsedTime().TotalMilliseconds;
+                profileData.AddData(_firstKey, firstTime);
+                profileData.AddData(_secondKey, secondTime);
             }
 
             return profileData;
-        }
-
-        private double CalculateTime(Action action)
-        {
-            Stopwatch sw = new Stopwatch();
-            EventThread th = new EventThread(action);
-            th.OnThreadCompleted += () => sw.Stop();
-            sw = Stopwatch.StartNew();
-            th.Start();
-            return sw.Elapsed.TotalMilliseconds;
         }
     }
 }
