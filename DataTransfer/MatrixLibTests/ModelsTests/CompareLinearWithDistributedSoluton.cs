@@ -1,19 +1,21 @@
 ﻿using MatrixLib.Models;
 using MatrixLib.Models.SleSolutionMethods;
-using System.Net.Http;
+using ProfilerLib.Models;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace MatrixLibTests.ModelsTests
 {
-    public sealed class TestDistributedGaussSolution
+    public class CompareLinearWithDistributedSoluton
     {
         [Fact]
-        public void Test()
+        public void CompareLinearWithDistributedSolution()
         {
             Matrix<double> expected = new Matrix<double>(new double[,]
-            {
+           {
               { -3, -1, 2, 7 }
-            });
+           });
 
             Matrix<double> coefficients = new Matrix<double>(new double[,]
             {
@@ -32,9 +34,12 @@ namespace MatrixLibTests.ModelsTests
             });
 
             SLE sle = new SLE(coefficients, freeMembers);
-            DistributedGaussSolution solutionMethod = new DistributedGaussSolution(sle);
-            var x = solutionMethod.SolveSle();
-            Assert.True(x.Equals(expected));
+
+            IProfiler profiler = new Profiler("Distributed", "L",
+                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle), () => new GaussSolutionMethod(sle)),
+                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle), () => new GaussSolutionMethod(sle)),
+                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle), () => new GaussSolutionMethod(sle)));
+            var profileData = profiler.Profile();
         }
     }
 }

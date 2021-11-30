@@ -24,6 +24,8 @@ namespace DataTransferLib.Models.Servers
                 _server = new TcpListener(serverIp, port);
             }
 
+            OnDataReceived += (client, msg) => SendAnswer(client, msg + "  RECEIVED SUCCESFULLY");
+
             Start();
         }
 
@@ -58,7 +60,6 @@ namespace DataTransferLib.Models.Servers
             client.GetStream().Read(data);
             builder.AppendLine(Encoding.UTF8.GetString(data));
             OnDataReceived?.Invoke(client, builder.ToString());
-            SendAnswer(client, "Message" + "received" + builder.ToString());
             client.Stop();
         }
 

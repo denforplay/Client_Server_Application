@@ -1,6 +1,6 @@
 ﻿namespace MatrixLib.Models.FileReader
 {
-    public interface IFileReader<T>
+    public interface IFileReader<out T>
     {
         public T ReadData(string filepath);
     }

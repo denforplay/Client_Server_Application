@@ -28,6 +28,8 @@ namespace DataTransferLib.Models.Servers
             string data = tokens[1];
             string url = tokens[3].Split("\r\n")[0];
             string host = tokens[4];
+            if (data == "gzip,")
+                return new Request(httpType, url, host, "");
             return new Request(httpType, url, host, data);
         }
     }

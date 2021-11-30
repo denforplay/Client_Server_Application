@@ -18,7 +18,7 @@
             return ReverseRun();
         }
 
-        protected void StraightRun()
+        protected virtual void StraightRun()
         {
             for (int i = 0; i < _sle.MatrixCoefficients.GetHeight; i++)
             {

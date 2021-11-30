@@ -17,9 +17,10 @@ namespace MatrixLib.Core
             }));
         }
 
-        public void Start()
+        public EventThread Start()
         {
             _thread.Start();
+            return this;
         }
     }
 }

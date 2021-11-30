@@ -12,44 +12,33 @@ namespace MatrixLib.Models.SleSolutionMethods
         {
             var coefficients = _sle.MatrixCoefficients;
             Matrix<double> x = new Matrix<double>(1, coefficients.GetHeight);
-            List<EventThread> threads = new List<EventThread>();
+            StraightRun();
+            return ReverseRun();
+        }
 
-            for (int i = 0; i < coefficients.GetHeight; i++)
+        protected override void StraightRun()
+        {
+            for (int i = 0; i < _sle.MatrixCoefficients.GetHeight; i++)
             {
-                int j = i;
-                EventThread thread = new EventThread(() => Calculate(j));
-                threads.Add(thread);
+                Calculate(i);
             }
-
-            for (int i = 0; i < threads.Count - 1; i++)
-            {
-                int j = i;
-                threads[j].OnThreadCompleted += () => threads[j + 1].Start();
-            }
-
-            threads.First().Start();
-
-            threads.Last().OnThreadCompleted += () =>
-            {
-                x = ReverseRun();
-            };
-
-            return x;
         }
 
         protected override void Calculate(int i)
         {
             var coefficients = _sle.MatrixCoefficients;
-            Parallel.For(i + 1, coefficients.GetWidth, (j) =>
+
+            for (int j = i + 1; j < coefficients.GetWidth; j++)
             {
                 double d = coefficients[j, i] / coefficients[i, i];
-                for (int k = i; k < coefficients.GetWidth; k++)
+                Parallel.For(i, coefficients.GetWidth, (k) =>
                 {
                     coefficients[j, k] = coefficients[j, k] - d * coefficients[i, k];
-                }
+                });
+               
 
                 _sle.FreeMembers[j, 0] -= d * _sle.FreeMembers[i, 0];
-            });
+            }
         }
     }
 }

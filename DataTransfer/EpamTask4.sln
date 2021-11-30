@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTransferLib", "DataTran
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTransferTests", "DataTransferTests\DataTransferTests.csproj", "{02B8906B-3CE2-4A9E-89AB-BB8F3CAB6D6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixLib", "MatrixLib\MatrixLib.csproj", "{972BE267-21C5-420A-842F-8C0B04CBB488}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatrixLib", "MatrixLib\MatrixLib.csproj", "{972BE267-21C5-420A-842F-8C0B04CBB488}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixLibTests", "MatrixLibTests\MatrixLibTests.csproj", "{28126826-9202-4567-AFA3-9FBBF77D5A8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatrixLibTests", "MatrixLibTests\MatrixLibTests.csproj", "{28126826-9202-4567-AFA3-9FBBF77D5A8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfilerLib", "ProfilerLib\ProfilerLib.csproj", "{D048188F-B882-4683-99C7-C4E22547165B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{28126826-9202-4567-AFA3-9FBBF77D5A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28126826-9202-4567-AFA3-9FBBF77D5A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28126826-9202-4567-AFA3-9FBBF77D5A8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D048188F-B882-4683-99C7-C4E22547165B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D048188F-B882-4683-99C7-C4E22547165B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D048188F-B882-4683-99C7-C4E22547165B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D048188F-B882-4683-99C7-C4E22547165B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
