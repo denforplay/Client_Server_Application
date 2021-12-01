@@ -9,6 +9,7 @@ namespace DataTransferLib.Models.Servers
         private string _host;
         private string _data;
 
+        public string Url => _url;
         public string Data => _data;
 
         public HttpType HttpType => _httpType;

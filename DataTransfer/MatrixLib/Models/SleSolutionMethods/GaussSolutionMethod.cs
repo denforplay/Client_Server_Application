@@ -14,7 +14,6 @@
         public virtual Matrix<double> SolveSle()
         {
             StraightRun();
-
             return ReverseRun();
         }
 

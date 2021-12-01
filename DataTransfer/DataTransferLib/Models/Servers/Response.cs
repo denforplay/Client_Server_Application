@@ -24,6 +24,19 @@ namespace DataTransferLib.Models.Servers
 
             if (request.HttpType == Core.Enums.HttpType.GET)
             {
+                string filePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + "\\MatrixLib\\Views\\" + request.Data[1..];
+                if (File.Exists(filePath))
+                {
+                    FileInfo fileInfo = new FileInfo(filePath);
+                    FileStream fs = fileInfo.OpenRead();
+                    BinaryReader br = new BinaryReader(fs);
+                    Byte[] data = new byte[fs.Length];
+                    br.Read(data, 0, data.Length);
+                    br.Close();
+                    return new Response("200 OK", "text/html", data);
+
+                }
+
                 return new Response("200 OK", "text/html", Encoding.ASCII.GetBytes(request.Data));
             }
             else
@@ -31,6 +44,8 @@ namespace DataTransferLib.Models.Servers
                 return NotAllowedRequest();
             }
         }
+
+
 
         private static Response BadRequest()
         {
@@ -44,12 +59,14 @@ namespace DataTransferLib.Models.Servers
 
         public void Post(NetworkStream networkStream)
         {
-            string r = $"{HttpServer.VERSION} {_status}\n" +
-                $"Content-type: {_contentType}\n" +
-                $"Content-length: {_data.Length}";
-            r += $"\n\nReceived data: {Encoding.UTF8.GetString(_data)}";
-            byte[] data = Encoding.ASCII.GetBytes(r);
-            networkStream.Write(data, 0, data.Length);
+            string msg = "HTTP/1.1 200 OK\n" +
+                     $"Content-Type: {_contentType}\n" +
+                     $"Content-Length: {_data.Length}" + "\r\n\r\n"
+                     + Encoding.UTF8.GetString(_data);
+
+            byte[] responseMsg = Encoding.UTF8.GetBytes(msg);
+
+            networkStream.Write(responseMsg, 0, responseMsg.Length);
         }
     }
 }

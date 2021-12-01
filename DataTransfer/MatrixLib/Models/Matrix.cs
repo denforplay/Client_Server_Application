@@ -6,8 +6,6 @@ namespace MatrixLib.Models
     {
         private T[,] _matrix;
 
-       
-
         public Matrix(T[,] matrix)
         {
             _matrix = matrix;

@@ -12,7 +12,7 @@ namespace DataTransferLib.Models.Servers
         public delegate void ReceiveData(IClient client, string message);
         public event ReceiveData OnDataReceived;
 
-        private TcpListener _server;
+        protected TcpListener _server;
         private Thread _listenThread;
 
         public bool IsStarted { get; set; }
