@@ -7,7 +7,8 @@ namespace DataTransferLib.Models.Servers.Base
 {
     public class HttpServer : TcpServer
     {
-        public static string VERSION = "HTTP/1.1";
+        public static string HTTP_VERSION = "HTTP/1.1";
+        public static string WEB_FOLDER = @"\MatrixLib\root\";
 
         public HttpServer(string ip, int port) : base(ip, port)
         {
@@ -44,9 +45,7 @@ namespace DataTransferLib.Models.Servers.Base
             {
                 builder.AppendLine(reader.ReadLine());
             }
-            //OnDataReceived?.Invoke(client, builder.ToString());
-
-            SendAnswer(client, "Message" + "received" + builder.ToString());
+            OnDataReceivedEvent(client, builder.ToString());
             client.Stop();
         }
 

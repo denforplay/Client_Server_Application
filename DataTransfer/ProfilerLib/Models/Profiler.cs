@@ -29,8 +29,10 @@ namespace ProfilerLib.Models
 
             foreach(var actionsPair in _actions)
             {
-                double firstTime = actionsPair.Key.GetElapsedTime().TotalMilliseconds;
-                double secondTime = actionsPair.Value.GetElapsedTime().TotalMilliseconds;
+                var sw1 = actionsPair.Key.GetElapsedTime();
+                var sw2 = actionsPair.Value.GetElapsedTime();
+                double firstTime = sw1.TotalMilliseconds;
+                double secondTime = sw2.TotalMilliseconds;
                 profileData.AddData(_firstKey, firstTime);
                 profileData.AddData(_secondKey, secondTime);
             }

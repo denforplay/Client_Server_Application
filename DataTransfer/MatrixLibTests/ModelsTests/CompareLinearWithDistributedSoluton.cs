@@ -1,4 +1,5 @@
-﻿using MatrixLib.Models;
+﻿using MatrixLib.Controllers;
+using MatrixLib.Models;
 using MatrixLib.Models.SleSolutionMethods;
 using ProfilerLib.Models;
 using System;
@@ -9,36 +10,19 @@ namespace MatrixLibTests.ModelsTests
 {
     public class CompareLinearWithDistributedSoluton
     {
-        [Fact]
-        public void CompareLinearWithDistributedSolution()
+        [Theory]
+        [InlineData(10)]
+        [InlineData(100)]
+        [InlineData(1000)]
+        public void CompareLinearWithDistributedSolution(int size)
         {
-            Matrix<double> expected = new Matrix<double>(new double[,]
-           {
-              { -3, -1, 2, 7 }
-           });
-
-            Matrix<double> coefficients = new Matrix<double>(new double[,]
-            {
-                {3,2,1,1},
-                {1,-1,4,-1 },
-                {-2,-2,-3,1 },
-                {1,5,-1,2 },
-            });
-
-            Matrix<double> freeMembers = new Matrix<double>(new double[,]
-            {
-                {-2 },
-                {-1 },
-                {9 },
-                {4 },
-            });
-
-            SLE sle = new SLE(coefficients, freeMembers);
-
+            SLE sle = new SLE();
+            SleController sleController = new SleController(sle);
+            sleController.GenerateSle(size);
             IProfiler profiler = new Profiler("Distributed", "Linear",
-                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle), () => new GaussSolutionMethod(sle)),
-                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle), () => new GaussSolutionMethod(sle)),
-                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle), () => new GaussSolutionMethod(sle)));
+                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle).SolveSle(), () => new GaussSolutionMethod(sle).SolveSle()),
+                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle).SolveSle(), () => new GaussSolutionMethod(sle).SolveSle()),
+                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle).SolveSle(), () => new GaussSolutionMethod(sle).SolveSle()));
             var profileData = profiler.Profile();
         }
     }

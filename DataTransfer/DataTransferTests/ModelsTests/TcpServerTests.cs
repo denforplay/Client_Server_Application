@@ -8,12 +8,24 @@ namespace DataTransferTests.ModelsTests
 {
     public sealed class TcpServerTests
     {
+        [Fact]
+        public void CreateTcpServer_NullOrEmptyIp_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => new TcpServer("", 8080));
+        }
+
+        [Fact]
+        public void CreateTcpServer_InvalidIp_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => new TcpServer("256.256.256.256", 8080));
+        }
+
         [Theory]
         [InlineData("Hello")]
         public void CreateTcpServerTest_ReturnsTrue(string message)
         {
             TcpServer tcpServer = new TcpServer("127.0.0.1", 8080);
-            tcpServer.OnDataReceived += (client, receivedMessage) =>
+            tcpServer.DataReceiveEvent += (client, receivedMessage) =>
             {
                 Assert.Equal(message, receivedMessage);
             };

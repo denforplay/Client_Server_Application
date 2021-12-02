@@ -5,20 +5,36 @@ using System.Text;
 
 namespace DataTransferLib.Models.Clients
 {
+    /// <summary>
+    /// Represents tcp client
+    /// </summary>
     public class Client : IClient
     {
         protected TcpClient _client;
         private Thread _listenThread;
         private NetworkStream _networkStream => _client.GetStream();
         
+        /// <summary>
+        /// Property to chech if client is connected to server
+        /// </summary>
         public bool IsConnected { get; set; }
 
+        /// <summary>
+        /// Client constructor
+        /// </summary>
+        /// <param name="client">Tcp client connected to server</param>
         public Client(TcpClient client)
         {
             _client = client;
             Start();
         }
 
+        /// <summary>
+        /// Client constructor
+        /// </summary>
+        /// <param name="ip">Client ip</param>
+        /// <param name="port">Client port</param>
+        /// <exception cref="Exception">Throws if ip is not ip</exception>
         public Client(string ip, int port)
         {
             _client = new TcpClient();
@@ -59,15 +75,28 @@ namespace DataTransferLib.Models.Clients
             }
         }
 
-        public virtual void SendMessage(object content)
+        public virtual void SendMessage(string content)
         {
-            string message = content.ToString();
+            string message = content;
             byte[] data = Encoding.UTF8.GetBytes(message);
             _networkStream.Write(data, 0, data.Length);
         }
 
         public NetworkStream GetStream() => _networkStream;
 
-       
+        public override bool Equals(object? obj)
+        {
+            if (obj is Client)
+            {
+                return ReferenceEquals(obj, this);
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return _client.GetHashCode() + _listenThread.GetHashCode();
+        }
     }
 }

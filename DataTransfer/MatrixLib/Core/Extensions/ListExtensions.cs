@@ -2,8 +2,19 @@
 
 namespace MatrixLib.Core.Extensions
 {
+    /// <summary>
+    /// Provides extensions to list collection
+    /// </summary>
     public static class ListExtensions
     {
+        /// <summary>
+        /// Convert list to matrix
+        /// </summary>
+        /// <typeparam name="T">Typeof list data</typeparam>
+        /// <param name="list">List to convert into matrix</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Thrown if list is empty</exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public static Matrix<T> ToMatrix<T>(this List<List<T>> list) where T : IComparable
         {
             if (list.Count == 0 || list[0].Count == 0)

@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace MatrixLib.Models.Parsers.MatrixParsers
 {
+    /// <summary>
+    /// Represents class to parse sle from url data
+    /// </summary>
     public class SleFromUrl : SleParserBase
     {
         public override SLE ParseFrom(string from)
