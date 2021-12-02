@@ -26,6 +26,11 @@ namespace MatrixLib.Models.FileReader
         public SLE ReadData(string filepath)
         {
             string[] sleData = File.ReadAllLines(filepath);
+            return Read(sleData);
+        }
+
+        public SLE Read(string[] sleData)
+        {
             List<List<double>> coeficients = new List<List<double>>();
             List<List<double>> freeMembers = new List<List<double>>();
             for (int i = 0; i < sleData.Length; i++)

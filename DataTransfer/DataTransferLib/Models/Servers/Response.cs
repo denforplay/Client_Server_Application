@@ -1,6 +1,13 @@
-﻿using DataTransferLib.Models.Servers.Base;
+﻿using DataTransferLib.Core.Enums;
+using DataTransferLib.Models.Servers.Base;
+using MatrixLib.Models;
+using MatrixLib.Models.FileReader;
+using MatrixLib.Models.Parsers;
+using MatrixLib.Models.Parsers.MatrixParsers;
+using MatrixLib.Models.SleSolutionMethods;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DataTransferLib.Models.Servers
 {
@@ -21,8 +28,20 @@ namespace DataTransferLib.Models.Servers
         {
             if (request is null)
                 return BadRequest();
+            string[] splittedData = request.Data.Split('?');
+            if (splittedData.Length > 1 && Enum.TryParse(splittedData[1], out RequestTypes requestType))
+            {
+                if (requestType == RequestTypes.SolveSle)
+                {
+                    IParser<SLE> sleFromBrowser = new SleFromUrl();
+                    var sle = sleFromBrowser.ParseFrom(splittedData[0]);
+                    ISleSolutionMethod solutionMethod = new GaussSolutionMethod(sle);
+                    var solutions = solutionMethod.SolveSle();
+                    return new Response("200 OK", "text/html", Encoding.UTF8.GetBytes("Solutions: " + solutions.ToString()));
+                }
+            }
 
-            if (request.HttpType == Core.Enums.HttpType.GET)
+            if (request.HttpType == HttpType.GET)
             {
                 string filePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + "\\MatrixLib\\Views\\" + request.Data[1..];
                 if (File.Exists(filePath))

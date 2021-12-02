@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MatrixLib\MatrixLib.csproj" />
+  </ItemGroup>
+
 </Project>
