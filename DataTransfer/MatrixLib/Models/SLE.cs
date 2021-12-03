@@ -39,5 +39,26 @@ namespace MatrixLib.Models
             _matrixCoefficients = сoefficientsMatrix;
             _freeMembers = freeMembers;
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is SLE otherSle)
+            {
+                return otherSle.MatrixCoefficients.Equals(MatrixCoefficients)
+                    && otherSle.FreeMembers.Equals(FreeMembers);
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return _freeMembers.GetHashCode() + _matrixCoefficients.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return "Free members are: \n" + FreeMembers.ToString() + "\n" + "Matrix coefficients are: \n" + MatrixCoefficients.ToString();
+        }
     }
 }

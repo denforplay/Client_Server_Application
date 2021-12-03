@@ -19,10 +19,12 @@ namespace MatrixLibTests.ModelsTests
             SLE sle = new SLE();
             SleController sleController = new SleController(sle);
             sleController.GenerateSle(size);
-            IProfiler profiler = new Profiler("Distributed", "Linear",
-                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle).SolveSle(), () => new GaussSolutionMethod(sle).SolveSle()),
-                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle).SolveSle(), () => new GaussSolutionMethod(sle).SolveSle()),
-                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle).SolveSle(), () => new GaussSolutionMethod(sle).SolveSle()));
+            IProfiler profiler = new TimeProfiler("Distributed", "Linear",
+                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle, 10).SolveSle(), () => new GaussSolutionMethod(sle).SolveSle()),
+                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle, 8).SolveSle(), () => new GaussSolutionMethod(sle).SolveSle()),
+                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle, 6).SolveSle(), () => new GaussSolutionMethod(sle).SolveSle()),
+                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle, 4).SolveSle(), () => new GaussSolutionMethod(sle).SolveSle()));
+                new KeyValuePair<Action, Action>(() => new DistributedGaussSolution(sle, 2).SolveSle(), () => new GaussSolutionMethod(sle).SolveSle());
             var profileData = profiler.Profile();
         }
     }

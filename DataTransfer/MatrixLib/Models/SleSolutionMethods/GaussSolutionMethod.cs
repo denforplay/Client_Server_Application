@@ -1,22 +1,36 @@
 ﻿namespace MatrixLib.Models.SleSolutionMethods
 {
+    /// <summary>
+    /// Represents gauss solution method
+    /// </summary>
     public class GaussSolutionMethod : ISleSolutionMethod
     {
         public event Action OnSolved;
 
         protected SLE _sle;
 
+        /// <summary>
+        /// Gauss solution method constructor
+        /// </summary>
+        /// <param name="sle">Sle to solve by gauss linear method</param>
         public GaussSolutionMethod(SLE sle)
         {
             _sle = sle;
         }
 
+        /// <summary>
+        /// Solve sle method
+        /// </summary>
+        /// <returns>Matrix with soltions of sle</returns>
         public virtual Matrix<double> SolveSle()
         {
             StraightRun();
             return ReverseRun();
         }
 
+        /// <summary>
+        /// Matrix straight run
+        /// </summary>
         protected virtual void StraightRun()
         {
             for (int i = 0; i < _sle.MatrixCoefficients.GetHeight; i++)
@@ -25,6 +39,10 @@
             }
         }
 
+        /// <summary>
+        /// Method alculates matrix coefficients
+        /// </summary>
+        /// <param name="i">Line depends on which calculate</param>
         protected virtual void Calculate(int i)
         {
             var coefficients = _sle.MatrixCoefficients;
@@ -40,6 +58,10 @@
             }
         }
 
+        /// <summary>
+        /// Reverse run method
+        /// </summary>
+        /// <returns>Matrix with sle solutions</returns>
         protected Matrix<double> ReverseRun()
         {
             var coefficients = _sle.MatrixCoefficients;

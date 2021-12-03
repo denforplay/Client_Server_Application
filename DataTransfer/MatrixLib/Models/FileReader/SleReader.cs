@@ -21,6 +21,11 @@ namespace MatrixLib.Models.FileReader
             if (fileReader is null)
                 throw new ArgumentNullException("Empty file reader", nameof(fileReader));
 
+            if (string.IsNullOrEmpty(regexFilePath))
+            {
+                throw new ArgumentNullException("Empty refex file path");
+            }
+
             _regex = fileReader.ReadData(regexFilePath);
         }
 

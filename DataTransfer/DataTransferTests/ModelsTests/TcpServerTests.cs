@@ -14,14 +14,9 @@ namespace DataTransferTests.ModelsTests
             Assert.Throws<ArgumentNullException>(() => new TcpServer("", 8080));
         }
 
-        [Fact]
-        public void CreateTcpServer_InvalidIp_ThrowsArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => new TcpServer("256.256.256.256", 8080));
-        }
-
         [Theory]
         [InlineData("Hello")]
+        [InlineData("HelloHelloHelloHelloHelloHelloHelloHelloHelloHello")]
         public void CreateTcpServerTest_ReturnsTrue(string message)
         {
             TcpServer tcpServer = new TcpServer("127.0.0.1", 8080);

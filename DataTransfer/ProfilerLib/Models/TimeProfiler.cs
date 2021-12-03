@@ -1,22 +1,14 @@
-﻿using MatrixLib.Core;
-using ProfilerLib.Core.Extensions;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProfilerLib.Core.Extensions;
 
 namespace ProfilerLib.Models
 {
-    public class Profiler : IProfiler
+    public class TimeProfiler : IProfiler
     {
         private KeyValuePair<Action, Action>[] _actions;
         private string _firstKey;
         private string _secondKey;
 
-        public Profiler(string firstKey, string secondKey, params KeyValuePair<Action, Action>[] actions)
+        public TimeProfiler(string firstKey, string secondKey, params KeyValuePair<Action, Action>[] actions)
         {
             _actions = actions;
             _firstKey = firstKey;
